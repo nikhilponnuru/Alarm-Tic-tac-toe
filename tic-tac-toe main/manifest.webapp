@@ -1,0 +1,15 @@
+{
+  "name": "Tic tac toe",
+  "description": "My elevator pitch goes here",
+  "launch_path": "/Ttt.html",
+  "icons": {
+    "512": "/img/icon512.png",
+    "128": "/img/icon128.png"
+  },
+  "developer": {
+    "name": "Strings",
+    "url": "http://your-homepage-here.org"
+  },
+  "default_locale": "en",
+  "chrome": { "navigation": true }
+}

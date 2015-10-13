@@ -1,0 +1,206 @@
+
+<html lang="en-US">
+  <head>
+    <title>Alarm Clock</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+      html, body {
+        background-color: #eee;
+        font-family: tahoma;
+        font-size: 90%;
+        height: 100%;
+        width: 100%;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      td {
+        text-align: center;
+      }
+      #box {
+        background-color: #ff0000;
+        color: #fff;
+        font-weight: bold;
+        text-align: center;
+        padding: 3px 0 3px 0;
+      }
+      #container {
+        height: 100%;
+        vertical-align: middle;
+        width: 100%;
+      }
+      #clock {
+        fill: #cc55fa;
+        stroke: #000;
+        stroke-linecap: round;
+      }
+      #surface, #h_pointer {
+        stroke-width: 5px;
+      }
+      #delimiters, #s_pointer {
+        stroke-width: 1px;
+      }
+      #m_pointer {
+        stroke-width: 3px;
+      }
+      #numbers {
+        font-family: sans-serif;
+        font-size: 80%;
+      }
+    </style>
+    <script language="javascript" type="text/javascript">
+      function timerTick() {
+        with (new Date()) {
+          var h, m, s;
+          
+          h = 30 * ((getHours() % 12) + getMinutes() / 60);
+          m = 6 * getMinutes();
+          s = 6 * getSeconds();
+
+          document.getElementById('h_pointer').setAttribute('transform', 'rotate(' + h + ', 50, 50)');
+          document.getElementById('m_pointer').setAttribute('transform', 'rotate(' + m + ', 50, 50)'); 
+          document.getElementById('s_pointer').setAttribute('transform', 'rotate(' + s + ', 50, 50)');
+          
+          setTimeout(timerTick, 1000);
+        }
+      }
+    </script>
+  </head>
+  <body  onload='timerTick()'>
+    <noscript><div id='box'>Please, enable JavaScript and refresh page.</div></noscript>
+    <table id='container'>
+      <tr>
+        <td>
+          <svg id='clock' viewBox='0 0 100 100' width='200' height='200'>
+            <circle id='surface' cx='50' cy='50' r='45'/>
+            <g id='pointers'>
+              <line id='h_pointer' x1='50' y1='50' x2='50' y2='27' />
+              <line id='m_pointer' x1='50' y1='50' x2='50' y2='17' />
+              <line id='s_pointer' x1='50' y1='50' x2='50' y2='13' />
+            </g>
+            <g id='numbers'>
+              <text x='43' y='18'>12</text>
+              <text x='85' y='54'>3</text>
+              <text x='47' y='91'>6</text>
+              <text x='9' y='54'>9</text>
+            </g>
+          </svg>
+        </td>
+      </tr>
+    </table>
+  </body>
+  <style type="text/css">
+#jsalarmclock{
+font-family: Comic Sans MS;
+font-weight: bold;
+font-size: 15px;
+}
+
+#jsalarmclock div{
+margin-bottom: 0.8em;
+}
+
+#jsalarmclock div.leftcolumn{
+float: left;
+width: 150px;
+font-size: 13px;
+background-color: lightpink;
+clear: left;
+}
+
+#jsalarmclock span{
+margin-right: 6px;
+}
+
+</style>
+
+<script type="text/javascript">
+
+var jsalarm={
+	padfield:function(f){
+		return (f<10)? "0"+f : f
+	},
+	showcurrenttime:function(){
+		var dateobj=new Date()
+		var ct=this.padfield(dateobj.getHours())+":"+this.padfield(dateobj.getMinutes())+":"+this.padfield(dateobj.getSeconds())
+		this.ctref.innerHTML=ct
+		this.ctref.setAttribute("title", ct)
+		if (typeof this.hourwake!="undefined"){ //if alarm is set
+			if (this.ctref.title==(this.hourwake+":"+this.minutewake+":"+this.secondwake)){
+				clearInterval(jsalarm.timer)
+				window.location=document.getElementById("choice").value
+			}
+		}
+	},
+	init:function(){
+		var dateobj=new Date()
+		this.ctref=document.getElementById("jsalarm_ct")
+		this.submitref=document.getElementById("submitbutton")
+		this.submitref.onclick=function(){
+			jsalarm.setalarm()
+			this.value="Alarm Set"
+			this.disabled=true
+			return false
+		}
+		this.resetref=document.getElementById("resetbutton")
+		this.resetref.onclick=function(){
+		jsalarm.submitref.disabled=false
+		jsalarm.hourwake=undefined
+		jsalarm.hourselect.disabled=false
+		jsalarm.minuteselect.disabled=false
+		jsalarm.secondselect.disabled=false
+		return false
+		}
+		var selections=document.getElementsByTagName("select")
+		this.hourselect=selections[0]
+		this.minuteselect=selections[1]
+		this.secondselect=selections[2]
+		for (var i=0; i<60; i++){
+			if (i<24) //If still within range of hours field: 0-23
+			this.hourselect[i]=new Option(this.padfield(i), this.padfield(i), false, dateobj.getHours()==i)
+			this.minuteselect[i]=new Option(this.padfield(i), this.padfield(i), false, dateobj.getMinutes()==i)
+			this.secondselect[i]=new Option(this.padfield(i), this.padfield(i), false, dateobj.getSeconds()==i)
+
+		}
+		jsalarm.showcurrenttime()
+		jsalarm.timer=setInterval(function(){jsalarm.showcurrenttime()}, 1000)
+	},
+	setalarm:function(){
+		this.hourwake=this.hourselect.options[this.hourselect.selectedIndex].value
+		this.minutewake=this.minuteselect.options[this.minuteselect.selectedIndex].value
+		this.secondwake=this.secondselect.options[this.secondselect.selectedIndex].value
+		this.hourselect.disabled=true
+		this.minuteselect.disabled=true
+		this.secondselect.disabled=true
+		
+	}
+}
+
+</script>
+	
+  </head>
+  <body bgcolor="red">
+  <form action="" method="">
+<div id="jsalarmclock">
+<div><center><div class="leftcolumn"><center>Current Time:</center></div> <span id="jsalarm_ct" style="letter-spacing: 2px"></span>
+<div><center><div class="leftcolumn"><center>Set Alarm:</center></div> <span><select></select> </span> <span><select></select> </span> <span><select></select> </span>
+<div><center><div class="leftcolumn"><center>          </center></div> <span>              Hr</span> <span>       Min</span> <span>               Sec</span>
+<div><center><div class="leftcolumn"><center>Set Alarm Tone:</center></div> 
+<center><select id="choice"> 
+  <option value="1.mp3">alarmtone1</option>
+  <a href="tictactoe.html"> Click here to disable the song </a>
+  </select></center> <span style="font: normal 11px Tahoma">*Location of page to launch</span></div>
+<center><input type="submit" value="Set Alarm!" id="submitbutton" /> <input type="reset" value="reset" id="resetbutton" /></center>
+</div>
+
+
+
+<script type="text/javascript">
+
+jsalarm.init()
+
+</script>
+  </body>
+  
+</html>

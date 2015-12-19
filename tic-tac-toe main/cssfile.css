@@ -22,7 +22,7 @@ h3{
 h1{
 
 	position:relative;
-	-webkit-animation:h1Animation 5s; 
+	-webkit-animation:h1Animation 10s; 
 	
 }
 
@@ -37,7 +37,7 @@ canvas{
 
 	position:relative;
 	background-color:blue;
-	-webkit-animation:canvasAnimation 5s; 
+	-webkit-animation:canvasAnimation 10s; 
 	
 }
 
